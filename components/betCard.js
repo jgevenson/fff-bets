@@ -3,9 +3,10 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import calculatePayout from "../lib/calculatePayout";
 import oddsDisplay from "../lib/oddsDisplay";
+import concatArray from "../lib/concatArray";
 
 export default function BetCard({ bet }) {
-  bet.isSettled = betStatus(bet.result);
+  console.log(bet)
   return (
     <Card variant="outlined">
       <CardContent sx={{ position: "relative" }}>
@@ -15,7 +16,7 @@ export default function BetCard({ bet }) {
         <div>Bet: {bet.bet_description}</div>
         <div>Amount: ${bet.proposed_amount}</div>
         <div>Odds: {oddsDisplay(bet.odds)}</div>
-        <div>Payout: ${calculatePayout(bet.odds,bet.proposed_amount)}</div>
+        <div>Payout: ${calculatePayout(bet.odds, bet.proposed_amount)}</div>
         <Chip
           label={chipLabel(bet)}
           color={chipColor(bet)}
@@ -30,25 +31,9 @@ export default function BetCard({ bet }) {
     </Card>
   );
 }
-const concatArray = b => {
-  let text = '';
-  if (b.length === 1) {
-    text = b    
-  } else {
-    for(let i=0;i<b.length;i++) {
-      text += b[i] + ", "
-    }
-  }
-  return text
-}
-
-
-function betStatus(x) {
-  return (x != null || x > "") ? "TRUE" : "FALSE";
-}
 
 function chipLabel(x) {
-  return x.isSettled === "FALSE" ? "OPEN" : x.result;
+  return x.isSettled === false ? "OPEN" : x.result;
 }
 
 function chipColor(x) {
@@ -67,5 +52,5 @@ function chipColor(x) {
 }
 
 function chipOutline(x) {
-  return x.isSettled === "TRUE" ? "filled" : "outlined";
+  return x.isSettled === true ? "filled" : "outlined";
 }
