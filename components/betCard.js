@@ -7,7 +7,9 @@ import concatArray from "../lib/concatArray";
 
 export default function BetCard({ bet }) {
   console.log(bet)
+  let betURL = "./bet-detail/" + bet.id;
   return (
+    <a href = {betURL}>
     <Card variant="outlined">
       <CardContent sx={{ position: "relative" }}>
         <div>Member: {concatArray(bet.submitter)}</div>
@@ -18,9 +20,9 @@ export default function BetCard({ bet }) {
         <div>Odds: {oddsDisplay(bet.odds)}</div>
         <div>Payout: ${calculatePayout(bet.odds, bet.proposed_amount)}</div>
         <Chip
-          label={chipLabel(bet)}
+          label={(bet.isSettled === false) ? "OPEN" : bet.result}
           color={chipColor(bet)}
-          variant={chipOutline(bet)}
+          variant={(bet.isSettled === true) ? "filled" : "outlined"}
           sx={{
             position: "absolute",
             bottom: 24,
@@ -29,11 +31,8 @@ export default function BetCard({ bet }) {
         />
       </CardContent>
     </Card>
+    </a>
   );
-}
-
-function chipLabel(x) {
-  return x.isSettled === false ? "OPEN" : x.result;
 }
 
 function chipColor(x) {
@@ -51,6 +50,3 @@ function chipColor(x) {
   return color;
 }
 
-function chipOutline(x) {
-  return x.isSettled === true ? "filled" : "outlined";
-}
